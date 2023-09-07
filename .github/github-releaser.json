@@ -1,0 +1,9 @@
+{
+  "defaults": {
+    "name": "$$CHANGELOG",
+    "description": "$$CHANGELOG",
+    "milestones": [
+      "${CI_COMMIT_TAG}"
+    ]
+  }
+}
