@@ -1,0 +1,3 @@
+include:
+  - local: '/collections/All-Projects-Slim.github-ci.yml'
+  - local: '/jobs/Lint-Md.github-ci.yml'
