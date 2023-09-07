@@ -1,0 +1,19 @@
+# Template for linting template files with djlint, which can be extended
+# for various languages. Assumes the following variables are speficified:
+#   CONFIG_FILE_LINK: url for the default config file
+
+include:
+  - local: '/templates/Python.github-ci.yml'
+
+.djlint:
+  extends:
+    - .python
+  stage: lint
+  needs: []
+  before_script:
+    - pip install djlint==1.19.16
+    # If settings file does not exist, get default from config-file project
+    # and save as .djlintrc
+    - if [ ! -f .djlintrc ]; then (wget -O .djlintrc $CONFIG_FILE_LINK) fi
+  script:
+    - djlint --check --lint .
