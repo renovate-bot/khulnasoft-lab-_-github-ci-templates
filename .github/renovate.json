@@ -1,0 +1,46 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base", "docker:enableMajor"],
+  "ignorePresets": [":dependencyDashboard", ":prHourlyLimit2"],
+  "docker": {
+    "packageRules": [
+      {
+        "description": "Pin digests only if they are for a numbered version (excluding cases like node:16-alpine)",
+        "excludeDepNames": ["node", "docker"],
+        "matchCurrentVersion": "/^v?[0-9.]+$/",
+        "pinDigests": true
+      }
+    ]
+  },
+  "labels": ["Dependencies"],
+  "npm": {
+    "rangeStrategy": "pin"
+  },
+  "regexManagers": [
+    {
+      "description": "Update npm installed packages with pinned versions",
+      "fileMatch": ["\\.github-ci\\.yml$"],
+      "matchStrings": [
+        "\\bnpm i(?:nstall)? -g (?<depName>@?[\\w\\/.-]+)@(?<currentValue>[\\w.-]+)\\b"
+      ],
+      "datasourceTemplate": "npm"
+    },
+    {
+      "description": "Update pip installed packages with pinned versions",
+      "fileMatch": ["\\.github-ci\\.yml$"],
+      "matchStrings": [
+        "\\bpip install (?<depName>[\\w-]+)==(?<currentValue>[\\w.-]+)\\b"
+      ],
+      "datasourceTemplate": "pypi"
+    },
+    {
+      "description": "Update config file variable for any file from a Github project release",
+      "fileMatch": ["\\.github-ci\\.yml$"],
+      "matchStrings": [
+        "\\s+CONFIG_FILE_LINK: https:\\/\\/github.com\\/(?<depName>.*?)\\/-\\/raw\\/(?<currentValue>.*?)\\/\\w+"
+      ],
+      "datasourceTemplate": "github-releases"
+    }
+  ],
+  "timezone": "America/Chicago"
+}
